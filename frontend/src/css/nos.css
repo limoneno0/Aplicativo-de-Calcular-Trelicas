@@ -1,0 +1,307 @@
+/* 1. VARIÁVEIS E RESET */
+:root {
+    --bg-dark: #0A0F21;
+    --card-dark: #171D38;
+    --accent-purple: #5c59f0;
+    --text-white: #ffffff;
+    --text-gray: #a0a4b8;
+    --input-bg: #0f111a;
+    --border-color: #2e3248;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    margin: 0;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 2. ESTRUTURA PRINCIPAL */
+.app-container {
+    width: 100%;
+    max-width: 1200px;
+    height: 90vh;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.main-layout {
+    display: flex;
+    gap: 20px;
+    flex: 1;
+    min-height: 0; /* Importante para o scroll interno funcionar */
+}
+
+/* 3. COMPONENTES REUTILIZÁVEIS */
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--accent-purple);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-text h1 { font-size: 18px; margin: 0; }
+.header-text p { font-size: 12px; color: var(--text-gray); margin: 0; }
+
+.header-actions { display: flex; gap: 12px; }
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-white);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Estilo padronizado para os títulos dos cards */
+.input-card h3, 
+.table-card h3 {
+    font-size: 12px;
+    text-transform: uppercase;
+    margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-card h3 { color: var(--text-gray); }
+.table-card h3 { color: var(--accent-purple); }
+
+.input-card h3::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--accent-purple);
+    border-radius: 50%;
+}
+
+/* 4. SIDEBAR E NAVEGAÇÃO */
+.sidebar {
+    width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.nav-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-gray);
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.nav-btn.active {
+    background: rgba(92, 89, 240, 0.1);
+    border-color: var(--accent-purple);
+    color: var(--text-white);
+}
+
+/* 5. FORMULÁRIOS */
+.input-card {
+    background-color: var(--card-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 12px;
+    flex: 1;
+}
+
+.form-group label { font-size: 13px; color: var(--text-gray); margin-right: 8px; }
+.form-group input { background: transparent; border: none; color: white; width: 100%; outline: none; }
+.unit { font-size: 12px; color: var(--text-gray); }
+
+.btn-add {
+    width: 100%;
+    background: var(--accent-purple);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+/* 6. TABELA DE NÓS */
+.table-card {
+    background-color: var(--card-dark);
+    border: 1px solid #AA93F3;
+    border-radius: 12px;
+    padding: 20px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px 5px;
+    border-bottom: 1px solid #AA93F3;
+}
+
+th { color: #AA93F3;}
+td { color: var(--text-white); }
+
+.btn-action {
+    background: transparent;
+    border: none;
+    color: var(--text-gray);
+    cursor: pointer;
+    padding: 4px;
+}
+
+.btn-action:hover { color: var(--accent-purple); }
+
+/* 7. ÁREA DE VISUALIZAÇÃO */
+.viz-area {
+    flex: 1;
+    background-color: var(--card-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.viz-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.viz-title { font-size: 13px; display: flex; align-items: center; gap: 8px; color: var(--text-gray); }
+
+.btn-calculate {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-white);
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.canvas-placeholder {
+    flex: 1;
+    background-image: radial-gradient(#2e3248 1px, transparent 1px);
+    background-size: 30px 30px;
+    position: relative;
+}
+
+/* 8. SCROLLBAR CUSTOMIZADA */
+.table-card::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.table-card::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+    background: var(--input-bg);
+    border-radius: 10px;
+}
+
+.table-card::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 10px;
+}
+
+.table-card::-webkit-scrollbar-thumb:hover,
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-purple);
+}
+
+/* 9. RESETS ESPECÍFICOS DE INPUT */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] { -moz-appearance: textfield; }
+
+/* 10. RESPONSIVIDADE */
+@media (max-width: 768px) {
+    body { padding: 10px; height: auto; align-items: flex-start; }
+    .app-container { height: auto; padding: 16px; }
+    header { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .header-actions { width: 100%; justify-content: space-between; }
+    .main-layout { flex-direction: column; }
+    .sidebar { width: 100%; }
+    .nav-tabs { grid-template-columns: repeat(4, 1fr); gap: 5px; }
+    .nav-btn { padding: 8px 4px; font-size: 11px; }
+    .viz-area { min-height: 400px; order: -1; }
+    .form-row { flex-wrap: wrap; }
+}
+
+@media (max-width: 480px) {
+    .header-text h1 { font-size: 16px; }
+    .nav-tabs { grid-template-columns: 1fr 1fr; }
+}
