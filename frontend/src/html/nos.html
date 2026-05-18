@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Treliças</title>
+    <link rel="stylesheet" href="../css/nos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 20L12 4L21 20H3Z" /> 
+                        <path d="M12 4V20" /> 
+                        <path d="M3 20L12 12L21 20" /> 
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Calculadora de Treliças</h1>
+                    <p>Analise e calcule treliças de forma simples e visual</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-outline">Novo Projeto</button>
+                <button class="btn-outline">Salvar</button>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar com Menu e Inputs -->
+            <aside class="sidebar">
+                <nav class="nav-tabs">
+                    <a href="index.html" class="nav-btn active">Nós</a>
+                    <a href="barras.html" class="nav-btn">Barras</a>
+                    <a href="apoios.html" class="nav-btn">Apoios</a>
+                    <a href="cargas.html" class="nav-btn">Cargas</a>
+                </nav>
+
+                <div class="input-card">
+                    <h3>Inserir Nós</h3>
+                    <form id="form-nos">
+                        <div class="form-row">
+                            <span>Nó:</span>
+                            <div class="form-group">
+                                <label>X:</label>
+                                <input type="number" step="0.1">
+                                <span class="unit">m</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Y:</label>
+                                <input type="number" step="0.1">
+                                <span class="unit">m</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-add">+ Adicionar Nó</button>
+                    </form>
+                </div>
+
+                <!-- Abaixo do .input-card na sidebar -->
+                <div class="table-card">
+                    <h3>Nós Adicionados</h3>
+                    <table id="tabela-nos">
+                        <thead>
+                            <tr>
+                                <th>Nó</th>
+                                <th>X</th>
+                                <th>Y</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpo-tabela">
+                            <!-- Os nós entrarão aqui via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </aside>
+
+            <!-- Área de Visualização -->
+            <main class="viz-area">
+                <div class="viz-header">
+                    <div class="viz-title">
+                        <i data-lucide="eye" style="width: 18px; height: 18px; color: var(--accent-purple);"></i>
+                        <span>Visualização da Treliça</span>
+                    </div>
+                    <button class="btn-calculate">Calcular</button>
+                </div>
+                <!-- Espaço reservado para o Canvas -->
+                <div class="canvas-placeholder" id="truss-canvas-container">
+                    <!-- O canvas será inserido aqui pelo JS futuramente -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="../../../backend/src/bases.js"></script>
+    <script src="../js/nos.js"></script>
+
+</body>
+
+</html>
