@@ -39,4 +39,15 @@ function aplicaForca(id, noId, magnitude, graus) {
   }
 }
 
-module.exports = { criarNo, criarElemento, aplicaForca }
+//Pino: trava X e Y, mas permite rotação
+function criarPino(id, noId) {
+  return { id, noId }
+}
+
+//Rolete: trava só uma direção, permite mover na outra
+//direção pode ser Y, não tem como rolar em X, certo??????
+function criarRolete(id, noId) {
+  return { id, noId, direcao: 'y' }
+}
+
+module.exports = { criarNo, criarElemento, aplicaForca, criarPino, criarRolete }
