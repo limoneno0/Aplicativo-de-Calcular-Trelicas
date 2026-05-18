@@ -2,7 +2,7 @@
 lucide.createIcons();
 
 /* estado dos dados */
-/* Carrega os dados da sessão atual (zeram se fechar a aba ou der F5) */
+/* carrega os dados da sesaoo atual (zeram se fechar a aba ou der F5) */
 let listaNos = JSON.parse(sessionStorage.getItem("listaNos")) || [];
 let listaBarras = JSON.parse(sessionStorage.getItem("listaBarras")) || [];
 
@@ -94,7 +94,7 @@ linksNavegacao.forEach(link => {
 btnAddBarra.addEventListener('click', (e) => {
     e.preventDefault();
 
-    // Captura os valores selecionados nos selects
+    // pega os valores selecionados nos selects
     const valOrigem = parseInt(selectOrigem.value);
     const valDestino = parseInt(selectDestino.value);
 
@@ -107,7 +107,7 @@ btnAddBarra.addEventListener('click', (e) => {
             return;
         }
 
-        // Verifica se a barra já existe (seja de A para B ou de B para A)
+        // verifica se a barra já existe (de A para B ou de B para A)
         const barraExiste = listaBarras.some(
             b => (b.noA === valOrigem && b.noB === valDestino) ||
                  (b.noA === valDestino && b.noB === valOrigem)
@@ -118,7 +118,7 @@ btnAddBarra.addEventListener('click', (e) => {
             return;
         }
 
-        // Utiliza a estrutura do seu backend bases.js (id, noA, noB)
+        // utiliza a funcao criarElemento do backend bases.js 
         const novaBarra = criarElemento(
             listaBarras.length + 1,
             valOrigem,
@@ -131,13 +131,13 @@ btnAddBarra.addEventListener('click', (e) => {
         /* salva as barras na sessão */
         sessionStorage.setItem("listaBarras", JSON.stringify(listaBarras));
 
-        // Reseta os seletores para o estado inicial
+        // reseta os seletores para o estado inicial
         selectOrigem.selectedIndex = 0;
         selectDestino.selectedIndex = 0;
 
         atualizarTabela();
 
-        // Evita que erros na função de renderização do canvas barrem a atualização da tabela
+        // mesma coisa do canvas que pode barrar a atualização da tabela
         try {
             if (typeof refresh === "function") {
                 refresh();

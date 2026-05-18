@@ -2,7 +2,7 @@
 lucide.createIcons();
 
 /* estado dos dados */
-/* Carrega do sessionStorage (sobrevive à troca de abas, mas zera no F5/fechar aba) */
+/* Carrega os dados da sessão atual (zeram se fechar a aba ou der F5) */
 let listaNos = JSON.parse(sessionStorage.getItem("listaNos")) || [];
 
 /* dom elementos */
@@ -46,7 +46,7 @@ function removerNo(index) {
     
     listaNos.splice(index, 1);
 
-    /* Atualiza os nós salvos na sessão atual */
+    /* atualiza os nós salvos na sessao atual */
     sessionStorage.setItem("listaNos", JSON.stringify(listaNos));
     console.log("Lista de nós após remoção:", listaNos);
 
@@ -74,14 +74,14 @@ linksNavegacao.forEach(link => {
 });
 
 
-/* adicionar nó */
+/* adicionar no */
 btnAddNode.addEventListener('click', (e) => {
     e.preventDefault();
 
     const valX = parseFloat(inputX.value);
     const valY = parseFloat(inputY.value);
 
-    // Log para ver o que foi digitado nos inputs
+    // log pra ver o que foi digitado nos inputs
     console.log("Tentando adicionar nó nas coordenadas - X:", valX, "Y:", valY);
 
     if (!isNaN(valX) && !isNaN(valY)) {
@@ -97,7 +97,7 @@ btnAddNode.addEventListener('click', (e) => {
             return;
         }
 
-        // Mantém o uso da função criarNo vinda do seu bases.js
+        // uso da função criarNo vinda do bases.js
         const novoNo = criarNo(
             listaNos.length + 1,
             valX,
@@ -107,7 +107,7 @@ btnAddNode.addEventListener('click', (e) => {
         listaNos.push(novoNo);
         console.log("Lista de nós atual após o push:", listaNos);
 
-        /* Salva a lista de nós atualizada na sessão atual */
+        /* salva a lista de nós atualizada na sessão atual */
         sessionStorage.setItem("listaNos", JSON.stringify(listaNos));
 
         inputX.value = '';
@@ -116,7 +116,7 @@ btnAddNode.addEventListener('click', (e) => {
 
         atualizarTabela();
 
-        // Evita que falhas na atualização do canvas barrem o fluxo da tabela de nós
+        // evita que falhas na atualização do canvas atrapalhem o fluxo da tabela de nos mas meio que nao serve pra nada ainda
         try {
             if (typeof refresh === "function") {
                 refresh();
