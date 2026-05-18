@@ -1,3 +1,6 @@
 {
-  "name": "backend"
+  "name": "backend",
+  "dependencies": {
+    "mathjs": "^15.2.0"
+  }
 }
