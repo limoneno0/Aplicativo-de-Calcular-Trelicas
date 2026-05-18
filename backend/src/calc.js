@@ -201,7 +201,9 @@ const elem2 = criarElemento(2, no1, no3)
 const elem3 = criarElemento(3, no2, no3)
 
 const pino1   = criarPino(1, no1.id)
-const rolete1 = criarRolete(1, no2.id, 'y')
+//O y É O VÉRTICE QUE ELE PODE MOVER, honestamente por causa do mathjs ele só pode mover
+//em Y, mas isso dai  talvez tenha que arrumar depois
+const rolete1 = criarRolete(1, no2.id)
 
 const forca1 = aplicaForca(1, no3.id, 1000, 45)
 
