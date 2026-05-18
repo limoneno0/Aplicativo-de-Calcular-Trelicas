@@ -2,7 +2,7 @@
 lucide.createIcons();
 
 /* estado dos dados */
-/* carrega os dados da sessão atual (zeram se fechar a aba ou der F5) */
+/* Carrega os dados da sessão atual (zeram se fechar a aba ou der F5) */
 let listaNos = JSON.parse(sessionStorage.getItem("listaNos")) || [];
 let listaBarras = JSON.parse(sessionStorage.getItem("listaBarras")) || [];
 
@@ -15,14 +15,14 @@ const linksNavegacao = document.querySelectorAll('.nav-btn');
 const btnCalcular = document.querySelector('.btn-calculate');
 
 
-/* funcoes */
+/* funcoes da interface */
 
 function carregarOpcoesNos() {
-    // limpa as opceoes
+    // Limpa as opções mantendo apenas o placeholder padrão
     selectOrigem.innerHTML = '<option value="" disabled selected>Selecionar Nó</option>';
     selectDestino.innerHTML = '<option value="" disabled selected>Selecionar Nó</option>';
 
-    // preenche os selects com os nos disponiveis 
+    // Preenche os selects com os nós existentes na sessão
     listaNos.forEach((no) => {
         const opcao = `<option value="${no.id}">${no.id}</option>`;
         selectOrigem.innerHTML += opcao;
@@ -94,30 +94,31 @@ linksNavegacao.forEach(link => {
 btnAddBarra.addEventListener('click', (e) => {
     e.preventDefault();
 
+    // Captura os valores selecionados nos selects
     const valOrigem = parseInt(selectOrigem.value);
     const valDestino = parseInt(selectDestino.value);
+
+    console.log("Tentando adicionar barra de:", valOrigem, "para:", valDestino);
 
     if (!isNaN(valOrigem) && !isNaN(valDestino)) {
 
         if (valOrigem === valDestino) {
-            alert(
-                "Uma barra não pode conectar um nó a ele mesmo."
-            );
+            alert("Uma barra não pode conectar um nó a ele mesmo.");
             return;
         }
 
+        // Verifica se a barra já existe (seja de A para B ou de B para A)
         const barraExiste = listaBarras.some(
             b => (b.noA === valOrigem && b.noB === valDestino) ||
                  (b.noA === valDestino && b.noB === valOrigem)
         );
 
         if (barraExiste) {
-            alert(
-                "Esta barra já foi adicionada."
-            );
+            alert("Esta barra já foi adicionada.");
             return;
         }
 
+        // Utiliza a estrutura do seu backend bases.js (id, noA, noB)
         const novaBarra = criarElemento(
             listaBarras.length + 1,
             valOrigem,
@@ -125,23 +126,28 @@ btnAddBarra.addEventListener('click', (e) => {
         );
 
         listaBarras.push(novaBarra);
+        console.log("Lista de barras atual após o push:", listaBarras);
 
         /* salva as barras na sessão */
         sessionStorage.setItem("listaBarras", JSON.stringify(listaBarras));
 
+        // Reseta os seletores para o estado inicial
         selectOrigem.selectedIndex = 0;
         selectDestino.selectedIndex = 0;
 
         atualizarTabela();
 
-        if (typeof refresh === "function") {
-            refresh();
+        // Evita que erros na função de renderização do canvas barrem a atualização da tabela
+        try {
+            if (typeof refresh === "function") {
+                refresh();
+            }
+        } catch (erroCanvas) {
+            console.warn("A função refresh() falhou ao desenhar no canvas, mas os dados da barra foram salvos:", erroCanvas);
         }
 
     } else {
-        alert(
-            "Por favor, selecione os nós de Origem e Destino."
-        );
+        alert("Por favor, selecione os nós de Origem e Destino.");
     }
 });
 
@@ -156,9 +162,9 @@ btnCalcular.addEventListener('click', () => {
         const faltam = barrasNecessarias - barrasAtuais;
         alert(`Não é possível calcular: Treliça incompleta. Adicione mais ${faltam} barra${faltam > 1 ? 's' : ''}.`);
     } else if (barrasAtuais > barrasNecessarias) {
-        alert("Aviso: A treliça possui mais barras do que o necessário.");
+        alert("Aviso: A treliça possui mais barras do que o necessário para ser isostática (hiperestática).");
     } else {
-        alert("Estrutura pronta para o cálculo!");
+        alert("Estrutura isostática pronta para o cálculo!");
     }
 });
 
