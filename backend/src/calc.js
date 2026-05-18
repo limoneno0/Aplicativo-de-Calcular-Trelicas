@@ -137,24 +137,57 @@ function calcularReacoes(K, u, vinculos, nos) {
 }
 
 //Printa todos os resultados da treliça
-function printarResultados(nos, elementos, u, resultados, K, vinculos) {
+// Coleta todos os resultados em um objeto estruturado
+//se chamará ela para o frontend também
+function coletarResultados(nos, elementos, u, resultados, K, vinculos) {
+  const F_total = math.multiply(K, u)
+
+  const forcasElementos = resultados.map(r => ({
+    elementoId: r.elementoId,
+    forca: r.forca,
+    unidade: 'N',
+    tipo: r.tipo
+  }))
+
+  const deslocamentosNos = nos.map(no => {
+    const idx = (no.id - 1) * 2
+    return {
+      noId: no.id,
+      dx: parseFloat(u[idx].toFixed(4)),
+      dy: parseFloat(u[idx+1].toFixed(4)),
+      unidade: 'm'
+    }
+  })
+
+  const reacoesVinculos = vinculos.map(vinculo => {
+    const idx = (vinculo.noId - 1) * 2
+    return {
+      noId: vinculo.noId,
+      rx: parseFloat(F_total[idx].toFixed(4)),
+      ry: parseFloat(F_total[idx+1].toFixed(4)),
+      unidade: 'N'
+    }
+  })
+
+  return { forcasElementos, deslocamentosNos, reacoesVinculos }
+}
+
+// Imprime os resultados coletados, ela está assim para deixar mais fácil transferir para o front
+function imprimirResultados(dados) {
 
   console.log('\n=== FORÇAS NOS ELEMENTOS ===')
-  for (const r of resultados) {
-    console.log(`Elemento ${r.elementoId}: ${r.forca} N — ${r.tipo}`)
+  for (const r of dados.forcasElementos) {
+    console.log(`Elemento ${r.elementoId}: ${r.forca} ${r.unidade} — ${r.tipo}`)
   }
 
   console.log('\n=== DESLOCAMENTOS NOS NÓS ===')
-  for (const no of nos) {
-    const idx = (no.id - 1) * 2
-    console.log(`Nó ${no.id}: dx=${u[idx].toFixed(4)} m, dy=${u[idx+1].toFixed(4)} m`)
+  for (const d of dados.deslocamentosNos) {
+    console.log(`Nó ${d.noId}: dx=${d.dx} ${d.unidade}, dy=${d.dy} ${d.unidade}`)
   }
 
-  const F_total = math.multiply(K, u)
   console.log('\n=== REAÇÕES NOS VÍNCULOS ===')
-  for (const vinculo of vinculos) {
-    const idx = (vinculo.noId - 1) * 2
-    console.log(`Nó ${vinculo.noId}: Rx=${F_total[idx].toFixed(4)} N, Ry=${F_total[idx+1].toFixed(4)} N`)
+  for (const v of dados.reacoesVinculos) {
+    console.log(`Nó ${v.noId}: Rx=${v.rx} ${v.unidade}, Ry=${v.ry} ${v.unidade}`)
   }
 }
 
@@ -178,4 +211,5 @@ const vinculos  = [pino1, rolete1]
 const forcas    = [forca1]
 
 const { resultados, u, K } = calcularTrelica(nos, elementos, vinculos, forcas)
-printarResultados(nos, elementos, u, resultados, K, vinculos)
+const dados = coletarResultados(nos, elementos, u, resultados, K, vinculos)
+imprimirResultados(dados)

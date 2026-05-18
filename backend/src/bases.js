@@ -48,6 +48,6 @@ function criarPino(id, noId) {
 //direção pode ser x ou Y
 function criarRolete(id, noId, direcao) {
   return { id, noId, direcao }
-}
+} 
 
 module.exports = { criarNo, criarElemento, aplicaForca, criarPino, criarRolete }
