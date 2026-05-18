@@ -1,17 +1,19 @@
-/* --- 1. INICIALIZAÇÃO --- */
+/* inicializacao */
 lucide.createIcons();
 
-/* --- 2. ESTADO DA APLICAÇÃO (DADOS) --- */
-let listaNos = [];
+/* estado dos dados */
+/* Carrega do sessionStorage (sobrevive à troca de abas, mas zera no F5/fechar aba) */
+let listaNos = JSON.parse(sessionStorage.getItem("listaNos")) || [];
 
-/* --- 3. REFERÊNCIAS DO DOM (ELEMENTOS) --- */
+/* dom elementos */
 const btnAddNode = document.querySelector('.btn-add');
 const inputX = document.querySelectorAll('input[type="number"]')[0];
 const inputY = document.querySelectorAll('input[type="number"]')[1];
 const corpoTabela = document.getElementById('corpo-tabela');
 const linksNavegacao = document.querySelectorAll('.nav-btn');
 
-/* --- 4. FUNÇÕES DE INTERFACE --- */
+
+/* funcoes da interface */
 
 function atualizarTabela() {
     corpoTabela.innerHTML = '';
@@ -24,35 +26,52 @@ function atualizarTabela() {
                 <td>${no.y}</td>
                 <td>
                     <button class="btn-action" onclick="removerNo(${index})">
-                        <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                        <i data-lucide="trash-2"
+                           style="width: 14px; height: 14px;">
+                        </i>
                     </button>
                 </td>
             </tr>
         `;
+
         corpoTabela.innerHTML += linha;
     });
 
     lucide.createIcons();
 }
 
+
 function removerNo(index) {
     listaNos.splice(index, 1);
+
+    /* Atualiza os nós salvos na sessão atual */
+    sessionStorage.setItem("listaNos", JSON.stringify(listaNos));
+
     atualizarTabela();
 }
 
-/* --- 5. EVENTOS E LÓGICA --- */
 
-// Bloqueio de Navegação
+/* eventos e logica */
+
+/* bloqueio de navegação */
 linksNavegacao.forEach(link => {
     link.addEventListener('click', (e) => {
-        if (!link.classList.contains('active') && listaNos.length < 3) {
+
+        if (
+            !link.classList.contains('active') &&
+            listaNos.length < 3
+        ) {
             e.preventDefault();
-            alert("São necessários no mínimo 3 nós para prosseguir.");
+
+            alert(
+                "São necessários no mínimo 3 nós para prosseguir."
+            );
         }
     });
 });
 
-// Adicionar Nó
+
+/* adicionar nó */
 btnAddNode.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -60,15 +79,29 @@ btnAddNode.addEventListener('click', (e) => {
     const valY = parseFloat(inputY.value);
 
     if (!isNaN(valX) && !isNaN(valY)) {
-        const noExiste = listaNos.some(no => no.x === valX && no.y === valY);
+
+        const noExiste = listaNos.some(
+            no => no.x === valX && no.y === valY
+        );
 
         if (noExiste) {
-            alert("Esse nó já existe, escolha outro.");
+            alert(
+                "Esse nó já existe, escolha outro."
+            );
             return;
         }
 
-        const novoNo = criarNo(listaNos.length + 1, valX, valY); // <--- correção
+        // Mantém o uso da função criarNo vinda do seu bases.js
+        const novoNo = criarNo(
+            listaNos.length + 1,
+            valX,
+            valY
+        );
+
         listaNos.push(novoNo);
+
+        /* Salva a lista de nós atualizada na sessão atual */
+        sessionStorage.setItem("listaNos", JSON.stringify(listaNos));
 
         inputX.value = '';
         inputY.value = '';
@@ -76,9 +109,17 @@ btnAddNode.addEventListener('click', (e) => {
 
         atualizarTabela();
 
-        if (typeof refresh === "function") refresh();
+        if (typeof refresh === "function") {
+            refresh();
+        }
 
     } else {
-        alert("Por favor, insira valores válidos para X e Y.");
+        alert(
+            "Por favor, insira valores válidos para X e Y."
+        );
     }
 });
+
+
+/* carregar tabela ao abrir a pagina */
+atualizarTabela();
