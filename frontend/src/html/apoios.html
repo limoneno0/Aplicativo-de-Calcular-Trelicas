@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Treliças - Apoios</title>
+    <link rel="stylesheet" href="../css/apoios.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 20L12 4L21 20H3Z" /> 
+                        <path d="M12 4V20" /> 
+                        <path d="M3 20L12 12L21 20" /> 
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Calculadora de Treliças</h1>
+                    <p>Analise e calcule treliças de forma simples e visual</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-outline">Novo Projeto</button>
+                <button class="btn-outline">Salvar</button>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <aside class="sidebar">
+                <nav class="nav-tabs">
+                    <a href="nos.html" class="nav-btn">Nós</a>
+                    <a href="barras.html" class="nav-btn">Barras</a>
+                    <a href="apoios.html" class="nav-btn active">Apoios</a>
+                    <a href="cargas.html" class="nav-btn">Cargas</a>
+                </nav>
+
+                <div class="input-card input-card-apoios">
+                    <h3>Definir Apoios</h3>
+                    <form id="form-apoios">
+                        <div class="form-row-apoios">
+                            <div class="form-group-apoios">
+                                <label>Tipo de Apoio</label>
+                                <select id="select-tipo">
+                                    <option value="" disabled selected>Selecionar Apoio</option>
+                                    <option value="Rolete">Rolete</option>
+                                    <option value="Pino">Pino</option>
+                                </select>
+                            </div>
+                            <div class="form-group-apoios">
+                                <label>Nó de Localização</label>
+                                <select id="select-no">
+                                    <option value="" disabled selected>Selecionar Nó</option>
+                                </select>
+                            </div>
+                            <div class="form-group-apoios">
+                                <label>Ângulo</label>
+                                <select id="select-angulo">
+                                    <option value="0">0°</option>
+                                    <option value="90">90°</option>
+                                    <option value="180">180°</option>
+                                    <option value="270">270°</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-add btn-add-apoios">+ Adicionar Apoio</button>
+                    </form>
+                </div>
+
+                <div class="table-card">
+                    <h3>Apoios Adicionados</h3>
+                    <table id="tabela-apoios">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Nó</th>
+                                <th>Ângulo</th>
+                                <th>Modificar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpo-tabela-apoios">
+                        </tbody>
+                    </table>
+                </div>
+            </aside>
+
+            <main class="viz-area">
+                <div class="viz-header">
+                    <div class="viz-title">
+                        <i data-lucide="eye" style="width: 18px; height: 18px; color: var(--accent-purple);"></i>
+                        <span>Visualização da Treliça</span>
+                    </div>
+                    <button class="btn-calculate">Calcular</button>
+                </div>
+                <div class="canvas-placeholder" id="truss-canvas-container">
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="../../../backend/src/bases.js"></script>
+    <script src="../js/apoios.js"></script>
+</body>
+
+</html>
