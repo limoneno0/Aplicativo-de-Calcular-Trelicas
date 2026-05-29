@@ -68,26 +68,7 @@ function removerBarra(index) {
 
 /* eventos e logica */
 
-/* bloqueio de navegação */
-linksNavegacao.forEach(link => {
-    link.addEventListener('click', (e) => {
-        if (!link.classList.contains('active') && listaNos.length < 3) {
-            e.preventDefault();
-            alert("São necessários no mínimo 3 nós para prosseguir.");
-            return;
-        }
-
-        const n = listaNos.length;
-        const barrasNecessarias = 2 * n - 3;
-        const barrasAtuais = listaBarras.length;
-
-        if (!link.classList.contains('active') && barrasAtuais < barrasNecessarias) {
-            e.preventDefault();
-            const faltam = barrasNecessarias - barrasAtuais;
-            alert(`Treliça incompleta, adicionar mais ${faltam} barra${faltam > 1 ? 's' : ''}.`);
-        }
-    });
-});
+/* NAVEGAÇÃO LIVRE: O bloqueio de navegação anterior foi completamente removido daqui */
 
 
 /* adicionar barra */
@@ -143,7 +124,7 @@ btnAddBarra.addEventListener('click', (e) => {
                 refresh();
             }
         } catch (erroCanvas) {
-            console.warn("A função refresh() falhou ao desenhar no canvas, mas os dados da barra foram salvos:", erroCanvas);
+            console.warn("A função refresh() falhou ao desenhar no canvas, mas os dados foram salvos:", erroCanvas);
         }
 
     } else {
@@ -152,21 +133,55 @@ btnAddBarra.addEventListener('click', (e) => {
 });
 
 
-/* validar acao do botao calcular */
-btnCalcular.addEventListener('click', () => {
-    const n = listaNos.length;
-    const barrasNecessarias = 2 * n - 3;
-    const barrasAtuais = listaBarras.length;
+/* VALIDACAO CENTRALIZADA NO BOTAO CALCULAR */
+if (btnCalcular) {
+    btnCalcular.addEventListener('click', () => {
+        // Puxa os dados atualizados em tempo real de todas as coleções na sessão
+        const nos = JSON.parse(sessionStorage.getItem("listaNos")) || [];
+        const barras = JSON.parse(sessionStorage.getItem("listaBarras")) || [];
+        const apoios = JSON.parse(sessionStorage.getItem("listaApoios")) || [];
+        const cargas = JSON.parse(sessionStorage.getItem("listaCargas")) || [];
 
-    if (barrasAtuais < barrasNecessarias) {
-        const faltam = barrasNecessarias - barrasAtuais;
-        alert(`Não é possível calcular: Treliça incompleta. Adicione mais ${faltam} barra${faltam > 1 ? 's' : ''}.`);
-    } else if (barrasAtuais > barrasNecessarias) {
-        alert("Aviso: A treliça possui mais barras do que o necessário para ser isostática (hiperestática).");
-    } else {
-        alert("Estrutura isostática pronta para o cálculo!");
-    }
-});
+        let erros = [];
+
+        // 1. Validação de Nós
+        if (nos.length < 3) {
+            erros.push(`- Nós: São necessários no mínimo 3 nós (atualmente possui ${nos.length}).`);
+        }
+
+        // 2. Validação de Barras (Isostática: b = 2n - 3) com fallback caso não haja nós suficientes
+        if (nos.length >= 3) {
+            const barrasNecessarias = 2 * nos.length - 3;
+            if (barras.length < barrasNecessarias) {
+                const faltam = barrasNecessarias - barras.length;
+                erros.push(`- Barras: Treliça incompleta. Faltam adicionar ${faltam} barra${faltam > 1 ? 's' : ''}.`);
+            } else if (barras.length > barrasNecessarias) {
+                erros.push(`- Barras: A treliça possui mais barras do que o necessário (${barras.length} de ${barrasNecessarias}), tornando-a hiperestática.`);
+            }
+        } else {
+            erros.push("- Barras: Não é possível definir as barras necessárias até que haja pelo menos 3 nós criados.");
+        }
+
+        // 3. Validação de Apoios (Exatamente 1 Pino e 1 Rolete)
+        const qtdPino = apoios.filter(a => a.tipo === "Pino").length;
+        const qtdRolete = apoios.filter(a => a.tipo === "Rolete").length;
+        if (qtdPino !== 1 || qtdRolete !== 1) {
+            erros.push(`- Apoios: Configuração inválida. Requer exatamente 1 Pino e 1 Rolete (atualmente possui ${qtdPino} Pino(s) e ${qtdRolete} Rolete(s)).`);
+        }
+
+        // 4. Validação de Forças/Cargas
+        if (cargas.length < 1) {
+            erros.push("- Cargas: É necessário configurar no mínimo 1 força na treliça para realizar o cálculo.");
+        }
+
+        // Exibição do veredito final
+        if (erros.length > 0) {
+            alert("Não é possível calcular a treliça. Corrija os seguintes problemas:\n\n" + erros.join("\n"));
+        } else {
+            alert("Estrutura perfeitamente consistente e isostática! Pronta para o cálculo.");
+        }
+    });
+}
 
 
 /* inicialização ao abrir a pagina */
