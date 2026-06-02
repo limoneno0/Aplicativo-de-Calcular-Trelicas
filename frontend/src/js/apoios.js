@@ -68,8 +68,6 @@ function removerApoio(index) {
 
 /* eventos e logica */
 
-/* NAVEGAÇÃO LIVRE: O bloqueio e os alertas anteriores foram removidos daqui */
-
 
 /* adicionar apoio */
 btnAddApoio.addEventListener('click', (e) => {
