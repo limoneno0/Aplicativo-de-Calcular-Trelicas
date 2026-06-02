@@ -126,7 +126,7 @@ btnAddApoio.addEventListener('click', (e) => {
 });
 
 
-/* VALIDACAO CENTRALIZADA NO BOTAO CALCULAR */
+/* validacao no botao calcular */
 if (btnCalcular) {
     btnCalcular.addEventListener('click', () => {
         // Puxa em tempo de execução os dados de todas as abas armazenados na sessão
@@ -137,12 +137,12 @@ if (btnCalcular) {
 
         let erros = [];
 
-        // 1. Validação de Nós
+        // 1. validação de nós
         if (nos.length < 3) {
             erros.push(`- Nós: São necessários no mínimo 3 nós (atualmente possui ${nos.length}).`);
         }
 
-        // 2. Validação de Barras (Isostática: b = 2n - 3)
+        // 2. validação de barras (b = 2n - 3)
         if (nos.length >= 3) {
             const barrasNecessarias = 2 * nos.length - 3;
             if (barras.length < barrasNecessarias) {
@@ -155,19 +155,19 @@ if (btnCalcular) {
             erros.push("- Barras: Não é possível determinar as barras necessárias até que haja pelo menos 3 nós criados.");
         }
 
-        // 3. Validação de Apoios (Exatamente 1 Pino e 1 Rolete)
+        // 3. validação de apoios (1 Pino e 1 Rolete)
         const qtdPino = apoios.filter(a => a.tipo === "Pino").length;
         const qtdRolete = apoios.filter(a => a.tipo === "Rolete").length;
         if (qtdPino !== 1 || qtdRolete !== 1) {
             erros.push(`- Apoios: Configuração inválida. Requer exatamente 1 Pino e 1 Rolete (atualmente possui ${qtdPino} Pino(s) e ${qtdRolete} Rolete(s)).`);
         }
 
-        // 4. Validação de Forças/Cargas
+        // 4. validação de forças/cargas
         if (cargas.length < 1) {
             erros.push("- Cargas: É necessário configurar no mínimo 1 força na treliça para realizar o cálculo.");
         }
 
-        // Exibição dos alertas acumulados ou sucesso total
+        // exibição dos alertas acumulados ou sucesso
         if (erros.length > 0) {
             alert("Não é possível calcular a treliça. Corrija os seguintes problemas:\n\n" + erros.join("\n"));
         } else {
