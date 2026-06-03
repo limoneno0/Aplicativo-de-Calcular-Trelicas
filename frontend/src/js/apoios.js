@@ -93,24 +93,38 @@ btnAddApoio.addEventListener('click', (e) => {
             return;
         }
 
-        // INSTANCIAÇÃO UTILIZANDO AS FUNÇÕES DO BACKEND (bases.js)
+        // INSTANCIAÇÃO UTILIZANDO AS NOVAS FUNÇÕES DO BACKEND (bases.js)
         let novoApoio;
         if (tipo === "Pino") {
-            novoApoio = criarPino(listaApoios.length + 1, noSelecionado, anguloSelecionado);
+            // O Pino recebe id e noId
+            novoApoio = criarPino(listaApoios.length + 1, noSelecionado);
         } else if (tipo === "Rolete") {
-            novoApoio = criarRolete(listaApoios.length + 1, noSelecionado, anguloSelecionado);
+            // Mapeia o ângulo para a direção correspondente ('x' ou 'y')
+            let forcaDir = 'y'; // Padrão para 0 e 180
+            if (anguloSelecionado === 90 || anguloSelecionado === 270) {
+                forcaDir = 'x';
+            }
+            
+            // O Rolete recebe id, noId e a direção mapeada
+            novoApoio = criarRolete(listaApoios.length + 1, noSelecionado, forcaDir);
         }
 
-        // Garante a compatibilidade mantendo a propriedade 'no' que a interface/tabela consome
-        novoApoio.no = novoApoio.noId;
+        // Adiciona as propriedades adicionais para a tabela e o canvas continuarem funcionando perfeitamente
+        novoApoio.tipo = tipo;
+        novoApoio.no = novoApoio.noId; // Garante compatibilidade com o front ('noId' vira 'no')
+        novoApoio.angulo = anguloSelecionado; 
 
         listaApoios.push(novoApoio);
 
-        // LOG DETALHADO DAS REAÇÕES NO CONSOLE
+        // LOG DETALHADO NO CONSOLE
         console.log(`%c[Apoio Adicionado] Tipo: ${novoApoio.tipo} no Nó: ${novoApoio.no}`, "color: #17A2B8; font-weight: bold;");
         console.log(`Ângulo selecionado: ${novoApoio.angulo}°`);
-        console.log(`Vínculos Estáticos -> Reação X: ${novoApoio.reacaoX} | Reação Y: ${novoApoio.reacaoY}`);
-        console.log("Lista de apoios atualizada:", listaApoios);
+        if (tipo === "Rolete") {
+            console.log(`Direção de restrição do Rolete (Direção da força): ${novoApoio.direcao.toUpperCase()}`);
+        } else {
+            console.log(`Vínculo do Pino: Restringe X e Y simultaneamente.`);
+        }
+        console.log("Dados do objeto salvo:", novoApoio);
 
         /* salva no sessionStorage */
         sessionStorage.setItem("listaApoios", JSON.stringify(listaApoios));
