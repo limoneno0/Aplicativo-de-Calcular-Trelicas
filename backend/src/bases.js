@@ -46,8 +46,8 @@ function criarPino(id, noId) {
 
 //Rolete: trava só uma direção, permite mover na outra
 //direção pode ser Y, não tem como rolar em X, certo??????
-function criarRolete(id, noId, dir) {
-  return { id, noId, direcao: dir }
+function criarRolete(id, noId, forcaDir) {
+  return { id, noId, direcao: forcaDir }
 }
 
 module.exports = { criarNo, criarElemento, aplicaForca, criarPino, criarRolete }

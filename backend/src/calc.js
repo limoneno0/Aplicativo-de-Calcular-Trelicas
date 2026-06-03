@@ -13,9 +13,20 @@ function montarMatriz(nos, elementos) {
     const L  = Math.sqrt(dx**2 + dy**2)
     const c  = dx / L
     const s  = dy / L
-    const EA_L = 1 / L   // EA = 1 por enquanto
+    //EA_L é aquele troço modulo de elasticidade vezes area por comprimento da barra
+    //Ele já tem que receber um real
+    //Por agora é o valor de elasticidade do AÇO
+    //Com uma area muito pequena
+    //const E = 200e9
+    //const A = 0.0001
+    
+    //const EA_L = (E * A) / L
+    
+    //eU ODEIO ESSE TROÇO, por agora EA_Lvai ficar a 1 e
+    //Não estamos simulando a realidade
+    const EA_L = 1 / L
 
-  ///SE ALGUÉM ME PERGUNTAR COMO ISSO FUNCIONA, EU SÓ ROUBEI DO MANO DO PYTHON
+  ///SE ALGUÉM ME PERGUNTAR COMO ISSO FUNCIONA, EU SÓ PEGUEI DO MANO DO PYTHON
     const k = [
       [ c*c,  c*s, -c*c, -c*s],
       [ c*s,  s*s, -c*s, -s*s],
@@ -95,10 +106,17 @@ function calcularElementos(elementos, u) {
       c * (u[iB] - u[iA]) +
       s * (u[iB+1] - u[iA+1])
     )
+    //NOTA DE VEZ ENQUANTO, A FORÇA ZERO DÁ COMO ALGO ALÉM DISSO
+    //POR CAUSA DA TRAÇÃO, A SOLUÇÃO ATUAL MAIS ACEITÁVEL É
+    //SÓ TACAR O FODASE E ARREDONDAR, PORQUE 0.0000012 PARA
+    //TODO ENTENDIMENTO É IGUAL 0
+
+    const forcaArred = parseFloat(forca.toFixed(4))
+
     return {
       elementoId: elem.id,
-      forca: parseFloat(forca.toFixed(4)),
-      tipo: forca > 0 ? 'TRAÇÃO' : forca < 0 ? 'COMPRESSÃO' : 'ZERO'
+      forca: forcaArred,
+      tipo: forcaArred > 0 ? 'TRAÇÃO' : forca < 0 ? 'COMPRESSÃO' : 'ZERO'
     }
   })
 }
@@ -114,7 +132,17 @@ function calcularTrelica(nos, elementos, vinculos, forcas) {
   console.log('K_red:')
   console.table(K_red)
   console.log('determinante:')
-  console.log(math.det(K_red))
+
+  const det = math.det(K_red)
+
+  console.log(det)
+
+  if (Math.abs(det) < 1e-10) {
+    return {
+      erro: 'Estrutura instável. Verifique os apoios.',
+      determinante: det
+    }
+  }
 
   const u_red      = math.lusolve(K_red, F_red)
   const u          = reconstruirDeslocamentos(u_red, mapa, nos.length * 2)
@@ -149,13 +177,14 @@ function coletarResultados(nos, elementos, u, resultados, K, vinculos) {
     tipo: r.tipo
   }))
 
+  //É necessário?
   const deslocamentosNos = nos.map(no => {
     const idx = (no.id - 1) * 2
     return {
       noId: no.id,
       dx: parseFloat(u[idx].toFixed(4)),
       dy: parseFloat(u[idx+1].toFixed(4)),
-      unidade: 'm'
+      unidade: 'u'
     }
   })
 
@@ -192,26 +221,47 @@ function imprimirResultados(dados) {
 }
 
 ///TESTES
-const no1 = criarNo(1, 0, 0)
-const no2 = criarNo(2, 3, 0)
-const no3 = criarNo(3, 1.5, 2)
+const no1 = criarNo(1, 3, 0)
+const no2 = criarNo(2, 6, 0)
+const no3 = criarNo(3, 4.5, 2)
+const no4 = criarNo(4, 2.5, 2)
 
 const elem1 = criarElemento(1, no1, no2)
 const elem2 = criarElemento(2, no1, no3)
 const elem3 = criarElemento(3, no2, no3)
 
+const elem4 = criarElemento(4, no1, no4)
+const elem5 = criarElemento(5, no4, no3)
+
 const pino1   = criarPino(1, no1.id)
 //O y É O VÉRTICE QUE ELE PODE MOVER, honestamente por causa do mathjs ele só pode mover
 //em Y, mas isso dai  talvez tenha que arrumar depois
-const rolete1 = criarRolete(1, no2.id, 'y')
+//const rolete1 = criarRolete(1, no2.id, 'y')
+
+//tetsando a criação com força em X, nesse ele dará o erro de instável
+//const rolete1 = criarRolete(1, no2.id, 'x')
+const rolete1 = criarRolete(1, no4.id, 'x')
 
 const forca1 = aplicaForca(1, no3.id, 1000, 45)
 
-const nos      = [no1, no2, no3]
-const elementos = [elem1, elem2, elem3]
+const nos      = [no1, no2, no3, no4]
+const elementos = [elem1, elem2, elem3, elem4, elem5]
 const vinculos  = [pino1, rolete1]
 const forcas    = [forca1]
 
-const { resultados, u, K } = calcularTrelica(nos, elementos, vinculos, forcas)
-const dados = coletarResultados(nos, elementos, u, resultados, K, vinculos)
+//const { resultados, u, K } = calcularTrelica(nos, elementos, vinculos, forcas)
+//const dados = coletarResultados(nos, elementos, u, resultados, K, vinculos)
+const resultadoTrelica = calcularTrelica(nos,elementos,vinculos,forcas)
+
+if (resultadoTrelica.erro) {
+  console.log('\n=== ERRO ===')
+  console.log(resultadoTrelica.erro)
+  console.log('Determinante:', resultadoTrelica.determinante)
+  process.exit(0)
+}
+
+const { resultados, u, K } = resultadoTrelica
+
+const dados = coletarResultados(nos,elementos,u,resultados,K,vinculos)
+
 imprimirResultados(dados)
