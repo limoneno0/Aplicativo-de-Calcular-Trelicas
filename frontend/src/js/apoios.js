@@ -75,7 +75,7 @@ btnAddApoio.addEventListener('click', (e) => {
 
     const tipo = selectTipo.value;
     const noSelecionado = parseInt(selectNo.value);
-    const angulo = parseInt(selectAngulo.value);
+    const anguloSelecionado = parseInt(selectAngulo.value);
 
     if (tipo && !isNaN(noSelecionado)) {
         
@@ -93,15 +93,24 @@ btnAddApoio.addEventListener('click', (e) => {
             return;
         }
 
-        // Objeto do novo apoio
-        const novoApoio = {
-            id: listaApoios.length + 1,
-            tipo: tipo,
-            no: noSelecionado,
-            angulo: angulo
-        };
+        // INSTANCIAÇÃO UTILIZANDO AS FUNÇÕES DO BACKEND (bases.js)
+        let novoApoio;
+        if (tipo === "Pino") {
+            novoApoio = criarPino(listaApoios.length + 1, noSelecionado, anguloSelecionado);
+        } else if (tipo === "Rolete") {
+            novoApoio = criarRolete(listaApoios.length + 1, noSelecionado, anguloSelecionado);
+        }
+
+        // Garante a compatibilidade mantendo a propriedade 'no' que a interface/tabela consome
+        novoApoio.no = novoApoio.noId;
 
         listaApoios.push(novoApoio);
+
+        // LOG DETALHADO DAS REAÇÕES NO CONSOLE
+        console.log(`%c[Apoio Adicionado] Tipo: ${novoApoio.tipo} no Nó: ${novoApoio.no}`, "color: #17A2B8; font-weight: bold;");
+        console.log(`Ângulo selecionado: ${novoApoio.angulo}°`);
+        console.log(`Vínculos Estáticos -> Reação X: ${novoApoio.reacaoX} | Reação Y: ${novoApoio.reacaoY}`);
+        console.log("Lista de apoios atualizada:", listaApoios);
 
         /* salva no sessionStorage */
         sessionStorage.setItem("listaApoios", JSON.stringify(listaApoios));
