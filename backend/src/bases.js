@@ -51,34 +51,3 @@ function criarRolete(id, noId, forcaDir) {
 }
 
 module.exports = { criarNo, criarElemento, aplicaForca, criarPino, criarRolete }
-
-/*
-// Pino: Sempre trava X e Y (independe do ângulo)
-function criarPino(id, noId, angulo) {
-  return { 
-    id, 
-    noId, 
-    tipo: 'Pino',
-    angulo: angulo,
-    reacaoX: true, 
-    reacaoY: true 
-  };
-}
-
-// Rolete: Restrição dinâmica calculada com base no ângulo
-function criarRolete(id, noId, angulo) {
-  // Se for 0 ou 180, reacaoX = false e reacaoY = true
-  // Se for 90 ou 270, reacaoX = true e reacaoY = false
-  const rx = (angulo === 90 || angulo === 270);
-  const ry = (angulo === 0 || angulo === 180);
-
-  return { 
-    id, 
-    noId, 
-    tipo: 'Rolete',
-    angulo: angulo,
-    reacaoX: rx, 
-    reacaoY: ry 
-  };
-}
-*/
