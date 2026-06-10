@@ -121,16 +121,18 @@ btnAddCarga.addEventListener('click', (e) => {
     const novaCarga = {
         id: listaCargas.length + 1,
         no: noSelecionado,
+        noId: noSelecionado,      // Propriedade mapeada para o back-end
         magnitude: magnitude,
         angulo: angulo,
+        graus: angulo,            // Propriedade mapeada para o back-end
         rotulo: rotulo
     };
 
     listaCargas.push(novaCarga);
 
-    // log no console
-    console.log(`%c[Força Adicionada] Rótulo: ${novaCarga.rotulo} no Nó: ${novaCarga.no}`, "color: #2E7D32; font-weight: bold;");
-    console.log(`Intensidade: ${novaCarga.magnitude} N | Inclinação angular: ${novaCarga.angulo}°`);
+    // log no console atualizado com os novos parâmetros adicionais
+    console.log(`%c[Força Adicionada] Rótulo: ${novaCarga.rotulo} no Nó: ${novaCarga.no} (noId: ${novaCarga.noId})`, "color: #2E7D32; font-weight: bold;");
+    console.log(`Intensidade: ${novaCarga.magnitude} N | Inclinação angular: ${novaCarga.angulo}° (graus: ${novaCarga.graus}°)`);
     console.log("Lista de forças salva no sessionStorage:", listaCargas);
 
     /* salva no sessionStorage */
