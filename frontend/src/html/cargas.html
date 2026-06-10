@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Treliças - Cargas</title>
+    <link rel="stylesheet" href="../css/cargas.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 20L12 4L21 20H3Z" /> 
+                        <path d="M12 4V20" /> 
+                        <path d="M3 20L12 12L21 20" /> 
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Calculadora de Treliças</h1>
+                    <p>Analise e calcule treliças de forma simples e visual</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn-outline">Novo Projeto</button>
+                <button class="btn-outline">Salvar</button>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <aside class="sidebar">
+                <nav class="nav-tabs">
+                    <a href="nos.html" class="nav-btn">Nós</a>
+                    <a href="barras.html" class="nav-btn">Barras</a>
+                    <a href="apoios.html" class="nav-btn">Apoios</a>
+                    <a href="cargas.html" class="nav-btn active">Cargas</a>
+                </nav>
+
+                <div class="input-card input-card-cargas">
+                    <h3>Definir Forças</h3>
+                    <form id="form-cargas">
+                        <div class="form-row-cargas">
+                            
+                            <div class="form-group-cargas">
+                                <label>Nó de Aplicação</label>
+                                <select id="select-no" required>
+                                    <option value="" disabled selected>Selecionar Nó</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group-cargas">
+                                <label>Magnitude</label>
+                                <div class="input-with-suffix">
+                                    <input type="number" id="input-magnitude" min="0.01" step="any" required>
+                                    <span class="suffix-label">N</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group-cargas">
+                                <label>Ângulo</label>
+                                <div class="input-with-suffix">
+                                    <input type="number" id="input-angulo" min="0" max="360" step="any" required>
+                                    <span class="suffix-label">°</span>
+                                </div>
+                            </div>
+
+                            <div class="form-group-cargas">
+                                <label>Rótulo / Nome</label>
+                                <input type="text" id="input-rotulo" required>
+                            </div>
+
+                        </div>
+                        <button type="submit" class="btn-add-cargas">+ Adicionar Força</button>
+                    </form>
+                </div>
+
+                <div class="table-card">
+                    <h3>Forças Adicionadas</h3>
+                    <table id="tabela-cargas">
+                        <thead>
+                            <tr>
+                                <th>Rótulo</th>
+                                <th>Nó</th>
+                                <th>Magnitude</th>
+                                <th>Ângulo</th>
+                                <th>Modificar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpo-tabela-cargas">
+                        </tbody>
+                    </table>
+                </div>
+            </aside>
+
+            <main class="viz-area">
+                <div class="viz-header">
+                    <div class="viz-title">
+                        <i data-lucide="eye" style="width: 18px; height: 18px; color: var(--accent-purple);"></i>
+                        <span>Visualização da Treliça</span>
+                    </div>
+                    <button class="btn-calculate">Calcular</button>
+                </div>
+                <div class="canvas-placeholder" id="truss-canvas-container">
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="../../../backend/src/bases.js"></script>
+    <script src="../js/cargas.js"></script>
+</body>
+
+</html>
