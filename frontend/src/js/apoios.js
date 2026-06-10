@@ -18,10 +18,10 @@ const btnCalcular = document.querySelector('.btn-calculate');
 /* funcoes da interface */
 
 function carregarOpcoesNos() {
-    // Limpa as opções mantendo apenas o placeholder padrão
+    // limpa as opções mantendo apenas o placeholder padrão
     selectNo.innerHTML = '<option value="" disabled selected>Selecionar Nó</option>';
 
-    // Preenche o select com os nós existentes na sessão anterior
+    // preenche o select com os nós existentes na sessão anterior
     listaNos.forEach((no) => {
         const opcao = `<option value="${no.id}">Nó ${no.id}</option>`;
         selectNo.innerHTML += opcao;
@@ -79,44 +79,43 @@ btnAddApoio.addEventListener('click', (e) => {
 
     if (tipo && !isNaN(noSelecionado)) {
         
-        // Regra 1: Não permitir mais de um apoio no mesmo nó
+        // regra 1: não permitir mais de um apoio no mesmo nó
         const noJaTemApoio = listaApoios.some(a => a.no === noSelecionado);
         if (noJaTemApoio) {
             alert(`O Nó ${noSelecionado} já possui um apoio configurado.`);
             return;
         }
 
-        // Regra 2: Evitar acumular desnecessariamente mais apoios do mesmo tipo antes de salvar
+        // regra 2: evitar acumular mais apoios do mesmo tipo antes de salvar
         const qtdMesmoTipo = listaApoios.filter(a => a.tipo === tipo).length;
         if (qtdMesmoTipo >= 1) {
             alert(`Você já adicionou um apoio do tipo ${tipo}. Remova o existente se deseja alterá-lo.`);
             return;
         }
 
-        // INSTANCIAÇÃO UTILIZANDO AS NOVAS FUNÇÕES DO BACKEND (bases.js)
+        // instanciacao utilizando as funcoes do back 
         let novoApoio;
         if (tipo === "Pino") {
             // O Pino recebe id e noId
             novoApoio = criarPino(listaApoios.length + 1, noSelecionado);
         } else if (tipo === "Rolete") {
-            // Mapeia o ângulo para a direção correspondente ('x' ou 'y')
-            let forcaDir = 'y'; // Padrão para 0 e 180
+            // mapeia o ângulo para a direção correspondente ('x' ou 'y')
+            let forcaDir = 'y'; // padrão para 0 e 180
             if (anguloSelecionado === 90 || anguloSelecionado === 270) {
                 forcaDir = 'x';
             }
             
-            // O Rolete recebe id, noId e a direção mapeada
+            // o rolete recebe id, noId e a direção mapeada
             novoApoio = criarRolete(listaApoios.length + 1, noSelecionado, forcaDir);
         }
 
-        // Adiciona as propriedades adicionais para a tabela e o canvas continuarem funcionando perfeitamente
         novoApoio.tipo = tipo;
-        novoApoio.no = novoApoio.noId; // Garante compatibilidade com o front ('noId' vira 'no')
+        novoApoio.no = novoApoio.noId; 
         novoApoio.angulo = anguloSelecionado; 
 
         listaApoios.push(novoApoio);
 
-        // LOG DETALHADO NO CONSOLE
+        // log no console
         console.log(`%c[Apoio Adicionado] Tipo: ${novoApoio.tipo} no Nó: ${novoApoio.no}`, "color: #17A2B8; font-weight: bold;");
         console.log(`Ângulo selecionado: ${novoApoio.angulo}°`);
         if (tipo === "Rolete") {
@@ -129,7 +128,7 @@ btnAddApoio.addEventListener('click', (e) => {
         /* salva no sessionStorage */
         sessionStorage.setItem("listaApoios", JSON.stringify(listaApoios));
 
-        // Reseta os seletores para o padrão
+        // reseta os seletores para o padrao
         selectTipo.selectedIndex = 0;
         selectNo.selectedIndex = 0;
         selectAngulo.selectedIndex = 0;
@@ -152,7 +151,7 @@ btnAddApoio.addEventListener('click', (e) => {
 /* validacao no botao calcular */
 if (btnCalcular) {
     btnCalcular.addEventListener('click', () => {
-        // Puxa em tempo de execução os dados de todas as abas armazenados na sessão
+        // puxa os dados de todas as abas armazenados na sessão
         const nos = JSON.parse(sessionStorage.getItem("listaNos")) || [];
         const barras = JSON.parse(sessionStorage.getItem("listaBarras")) || [];
         const apoios = JSON.parse(sessionStorage.getItem("listaApoios")) || [];
@@ -182,7 +181,7 @@ if (btnCalcular) {
         const qtdPino = apoios.filter(a => a.tipo === "Pino").length;
         const qtdRolete = apoios.filter(a => a.tipo === "Rolete").length;
         if (qtdPino !== 1 || qtdRolete !== 1) {
-            erros.push(`- Apoios: Configuração inválida. Requer exatamente 1 Pino e 1 Rolete (atualmente possui ${qtdPino} Pino(s) e ${qtdRolete} Rolete(s)).`);
+            erros.push(`- Apoios: Configuração inválida. Requer 1 Pino e 1 Rolete (atualmente possui ${qtdPino} Pino(s) e ${qtdRolete} Rolete(s)).`);
         }
 
         // 4. validação de forças/cargas
@@ -194,7 +193,7 @@ if (btnCalcular) {
         if (erros.length > 0) {
             alert("Não é possível calcular a treliça. Corrija os seguintes problemas:\n\n" + erros.join("\n"));
         } else {
-            alert("Estrutura perfeitamente consistente e isostática! Pronta para o cálculo.");
+            alert("Estrutura pronta para o cálculo!");
         }
     });
 }

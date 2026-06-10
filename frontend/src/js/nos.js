@@ -2,7 +2,7 @@
 lucide.createIcons();
 
 /* estado dos dados */
-/* Carrega os dados da sessão atual (zeram se fechar a aba ou der F5) */
+/* carrega os dados da sessão atual (zeram se fechar a aba ou der F5) */
 let listaNos = JSON.parse(sessionStorage.getItem("listaNos")) || [];
 
 /* dom elementos */
@@ -149,7 +149,7 @@ if (btnCalcular) {
         const qtdPino = apoios.filter(a => a.tipo === "Pino").length;
         const qtdRolete = apoios.filter(a => a.tipo === "Rolete").length;
         if (qtdPino !== 1 || qtdRolete !== 1) {
-            erros.push(`- Apoios: Configuração inválida. Requer exatamente 1 Pino e 1 Rolete (atualmente possui ${qtdPino} Pino(s) e ${qtdRolete} Rolete(s)).`);
+            erros.push(`- Apoios: Configuração inválida. Requer 1 Pino e 1 Rolete (atualmente possui ${qtdPino} Pino(s) e ${qtdRolete} Rolete(s)).`);
         }
 
         // 4. validação de forças/cargas
@@ -161,7 +161,7 @@ if (btnCalcular) {
         if (erros.length > 0) {
             alert("Não é possível calcular a treliça. Corrija os seguintes problemas:\n\n" + erros.join("\n"));
         } else {
-            alert("Estrutura perfeitamente consistente e isostática! Pronta para o cálculo.");
+            alert("Estrutura pronta para o cálculo!");
         }
     });
 }

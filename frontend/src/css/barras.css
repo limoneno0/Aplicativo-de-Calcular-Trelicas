@@ -3,7 +3,7 @@
     --bg-dark: #0A0F21;
     --card-dark: #171D38;
     --accent-purple: #5c59f0;
-    --accent-orange: #E06D3B; /* Cor dos botões/foco da página de barras */
+    --accent-orange: #E06D3B; 
     --text-white: #ffffff;
     --text-gray: #a0a4b8;
     --input-bg: #0f111a;
@@ -183,10 +183,10 @@ header {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a0a4b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
-    transition: border-color 0.2s ease; /* Transição suave adicionada aqui */
+    transition: border-color 0.2s ease; /* transicao */
 }
 
-/* Ilumina a borda do select com laranja ao clicar/focar */
+/* ilumina a borda do select */
 .form-group-barras select:focus {
     border-color: var(--accent-orange);
 }
@@ -208,7 +208,7 @@ header {
     background: #c55d30;
 }
 
-/* tabela de barras igual a de nos */
+/* tabela de barras */
 .table-card {
     background-color: var(--card-dark);
     border: 1px solid #AA93F3; 

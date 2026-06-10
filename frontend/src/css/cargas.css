@@ -3,7 +3,7 @@
     --bg-dark: #0A0F21;
     --card-dark: #171D38;
     --accent-purple: #5c59f0;
-    --accent-green: #2E7D32; /* Mudado de ciano para o tom de verde normal característico */
+    --accent-green: #2E7D32; 
     --text-white: #ffffff;
     --text-gray: #a0a4b8;
     --input-bg: #0f111a;
@@ -196,7 +196,7 @@ header {
     border-color: var(--accent-green);
 }
 
-/* Container de Sufixos para Forças (N e °) */
+/* sufixos para cargas (N e °) */
 .input-with-suffix {
     position: relative;
     display: flex;

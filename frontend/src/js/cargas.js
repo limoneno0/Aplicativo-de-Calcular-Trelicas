@@ -19,10 +19,10 @@ const btnCalcular = document.querySelector('.btn-calculate');
 /* funcoes da interface */
 
 function carregarOpcoesNos() {
-    // Limpa as opções mantendo apenas o placeholder padrão
+    // limpa as opções mantendo apenas o placeholder padrão
     selectNo.innerHTML = '<option value="" disabled selected>Selecionar Nó</option>';
 
-    // Preenche o select com os nós existentes na sessão anterior
+    // preenche o select com os nós existentes na sessão anterior
     listaNos.forEach((no) => {
         const opcao = `<option value="${no.id}">Nó ${no.id}</option>`;
         selectNo.innerHTML += opcao;
@@ -78,46 +78,46 @@ btnAddCarga.addEventListener('click', (e) => {
     const angulo = parseFloat(inputAngulo.value);
     const rotulo = inputRotulo.value.trim();
 
-    // Validação 1: Seleção do Nó
+    // validação 1: seleção do no
     if (isNaN(noSelecionado)) {
         alert("Por favor, selecione o Nó de Aplicação.");
         return;
     }
 
-    // Validação 2: Apenas uma única força por Nó
+    // validação 2: apenas uma única força por no
     const noJaTemForca = listaCargas.some(c => c.no === noSelecionado);
     if (noJaTemForca) {
         alert(`O Nó ${noSelecionado} já possui uma força configurada. Remova-a antes se deseja alterá-la.`);
         return;
     }
 
-    // Validação 3: Magnitude - Apenas números estritamente positivos (maiores que 0)
+    // validação 3: magnitude - apenas números positivos
     if (isNaN(magnitude) || magnitude <= 0) {
         alert("A magnitude da força deve ser um número positivo maior que zero.");
         return;
     }
 
-    // Validação 4: Ângulo - Apenas valores numéricos entre 0 e 360
+    // Validação 4: angulo - apenas valores entre 0 e 360
     if (isNaN(angulo) || angulo < 0 || angulo > 360) {
         alert("O ângulo de aplicação deve conter um valor de 0 a 360 graus.");
         return;
     }
 
-    // Validação 5: Rótulo - Apenas letras
+    // Validação 5: rótulo - apenas letras
     const regexLetras = /^[A-Za-zÀ-ÿ]+$/;
     if (!regexLetras.test(rotulo)) {
-        alert("O rótulo da força deve conter única e exclusivamente letras (Ex: P, F, Fbc).");
+        alert("O rótulo da força deve conter apenas letras.");
         return;
     }
 
-    // Validação 6: Impedir rótulos com nomes exatamente iguais (Permite p e P por exemplo)
+    // Validação 6: impedir rótulos com nomes exatamente iguais (permite p e P por exemplo)
     const rotuloJaExiste = listaCargas.some(c => c.rotulo === rotulo);
     if (rotuloJaExiste) {
         alert(`O rótulo "${rotulo}" já está sendo usado em outra força. Escolha um nome diferente.`);
         return;
     }
 
-    // Estruturação do objeto da força conforme os padrões do projeto
+    // estruturação do objeto da força 
     const novaCarga = {
         id: listaCargas.length + 1,
         no: noSelecionado,
@@ -128,7 +128,7 @@ btnAddCarga.addEventListener('click', (e) => {
 
     listaCargas.push(novaCarga);
 
-    // LOG COMPLETO NO CONSOLE PARA RASTREAMENTO
+    // log no console
     console.log(`%c[Força Adicionada] Rótulo: ${novaCarga.rotulo} no Nó: ${novaCarga.no}`, "color: #2E7D32; font-weight: bold;");
     console.log(`Intensidade: ${novaCarga.magnitude} N | Inclinação angular: ${novaCarga.angulo}°`);
     console.log("Lista de forças salva no sessionStorage:", listaCargas);
@@ -136,7 +136,7 @@ btnAddCarga.addEventListener('click', (e) => {
     /* salva no sessionStorage */
     sessionStorage.setItem("listaCargas", JSON.stringify(listaCargas));
 
-    // Reseta os campos para o padrão inicial
+    // reseta os campos para o padrão inicial
     selectNo.selectedIndex = 0;
     inputMagnitude.value = '';
     inputAngulo.value = '';
@@ -184,7 +184,7 @@ if (btnCalcular) {
         const qtdPino = apoios.filter(a => a.tipo === "Pino").length;
         const qtdRolete = apoios.filter(a => a.tipo === "Rolete").length;
         if (qtdPino !== 1 || qtdRolete !== 1) {
-            erros.push(`- Apoios: Configuração inválida. Requer exatamente 1 Pino e 1 Rolete (atualmente possui ${qtdPino} Pino(s) e ${qtdRolete} Rolete(s)).`);
+            erros.push(`- Apoios: Configuração inválida. Requer 1 Pino e 1 Rolete (atualmente possui ${qtdPino} Pino(s) e ${qtdRolete} Rolete(s)).`);
         }
 
         // 4. validação de forças/cargas
@@ -196,7 +196,7 @@ if (btnCalcular) {
         if (erros.length > 0) {
             alert("Não é possível calcular a treliça. Corrija os seguintes problemas:\n\n" + erros.join("\n"));
         } else {
-            alert("Estrutura perfeitamente consistente e isostática! Pronta para o cálculo.");
+            alert("Estrutura pronta para o cálculo!");
         }
     });
 }

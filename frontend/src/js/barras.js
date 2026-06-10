@@ -18,11 +18,11 @@ const btnCalcular = document.querySelector('.btn-calculate');
 /* funcoes da interface */
 
 function carregarOpcoesNos() {
-    // Limpa as opções mantendo apenas o placeholder padrão
+    // limpa as opções mantendo apenas o placeholder padrão
     selectOrigem.innerHTML = '<option value="" disabled selected>Selecionar Nó</option>';
     selectDestino.innerHTML = '<option value="" disabled selected>Selecionar Nó</option>';
 
-    // Preenche os selects com os nós existentes na sessão
+    // preenche os selects com os nós existentes na sessão
     listaNos.forEach((no) => {
         const opcao = `<option value="${no.id}">${no.id}</option>`;
         selectOrigem.innerHTML += opcao;
@@ -130,10 +130,10 @@ btnAddBarra.addEventListener('click', (e) => {
 });
 
 
-/* VALIDACAO CENTRALIZADA NO BOTAO CALCULAR */
+/* validacao no botao calcular */
 if (btnCalcular) {
     btnCalcular.addEventListener('click', () => {
-        // Puxa os dados atualizados em tempo real de todas as coleções na sessão
+        // puxa os dados de todas as abas armazenados na sessão
         const nos = JSON.parse(sessionStorage.getItem("listaNos")) || [];
         const barras = JSON.parse(sessionStorage.getItem("listaBarras")) || [];
         const apoios = JSON.parse(sessionStorage.getItem("listaApoios")) || [];
@@ -141,12 +141,12 @@ if (btnCalcular) {
 
         let erros = [];
 
-        // 1. Validação de Nós
+        // 1. validação de nos
         if (nos.length < 3) {
             erros.push(`- Nós: São necessários no mínimo 3 nós (atualmente possui ${nos.length}).`);
         }
 
-        // 2. Validação de Barras (Isostática: b = 2n - 3) com fallback caso não haja nós suficientes
+        // 2. validação de barras (b = 2n - 3)
         if (nos.length >= 3) {
             const barrasNecessarias = 2 * nos.length - 3;
             if (barras.length < barrasNecessarias) {
@@ -159,23 +159,23 @@ if (btnCalcular) {
             erros.push("- Barras: Não é possível definir as barras necessárias até que haja pelo menos 3 nós criados.");
         }
 
-        // 3. Validação de Apoios (Exatamente 1 Pino e 1 Rolete)
+        // 3. validação de apoios (1 Pino e 1 Rolete)
         const qtdPino = apoios.filter(a => a.tipo === "Pino").length;
         const qtdRolete = apoios.filter(a => a.tipo === "Rolete").length;
         if (qtdPino !== 1 || qtdRolete !== 1) {
-            erros.push(`- Apoios: Configuração inválida. Requer exatamente 1 Pino e 1 Rolete (atualmente possui ${qtdPino} Pino(s) e ${qtdRolete} Rolete(s)).`);
+            erros.push(`- Apoios: Configuração inválida. Requer 1 Pino e 1 Rolete (atualmente possui ${qtdPino} Pino(s) e ${qtdRolete} Rolete(s)).`);
         }
 
-        // 4. Validação de Forças/Cargas
+        // 4. validação de forças/cargas
         if (cargas.length < 1) {
             erros.push("- Cargas: É necessário configurar no mínimo 1 força na treliça para realizar o cálculo.");
         }
 
-        // Exibição do veredito final
+        // exibição dos alertas acumulados ou sucesso
         if (erros.length > 0) {
             alert("Não é possível calcular a treliça. Corrija os seguintes problemas:\n\n" + erros.join("\n"));
         } else {
-            alert("Estrutura perfeitamente consistente e isostática! Pronta para o cálculo.");
+            alert("Estrutura pronta para o cálculo!");
         }
     });
 }
