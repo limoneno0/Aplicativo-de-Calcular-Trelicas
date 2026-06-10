@@ -164,6 +164,12 @@ header {
     border-radius: 6px;
     padding: 8px 12px;
     flex: 1;
+    transition: border-color 0.2s ease; /* Transição suave ao clicar */
+}
+
+/* Ilumina a borda do container quando o input de texto receber o foco */
+.form-group:focus-within {
+    border-color: var(--accent-purple);
 }
 
 .form-group label { font-size: 13px; color: var(--text-gray); margin-right: 8px; }
