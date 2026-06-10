@@ -183,6 +183,12 @@ header {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a0a4b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='m6 9 6 6 6-6'/></svg>");
     background-repeat: no-repeat;
     background-position: right 12px center;
+    transition: border-color 0.2s ease; /* Transição suave adicionada aqui */
+}
+
+/* Ilumina a borda do select com laranja ao clicar/focar */
+.form-group-barras select:focus {
+    border-color: var(--accent-orange);
 }
 
 .btn-add-barras {
