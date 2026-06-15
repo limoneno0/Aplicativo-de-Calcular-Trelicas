@@ -1,4 +1,4 @@
-# Analisador de Treliças Planas
+# Calculadora de Treliças Planas
 
 Aplicação para análise de treliças planas que permite ao usuário definir nós, elementos, vínculos e forças, realizando o cálculo estrutural completo.
 
@@ -17,7 +17,7 @@ Aplicação para análise de treliças planas que permite ao usuário definir n�
 
 1. Insira as coordenadas dos nós
 2. Defina quais nós formam cada elemento
-3. Configure os vínculos da estrutura
+3. Configure os apoios da estrutura
 4. Aplique as forças externas
 5. Execute a análise para obter os resultados
 
