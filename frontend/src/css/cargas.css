@@ -240,7 +240,7 @@ header {
     border: 1px solid #AA93F3; 
     border-radius: 12px;
     padding: 20px;
-    max-height: 250px;
+    max-height: 350px;
     overflow-y: auto;
 }
 

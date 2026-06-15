@@ -1,6 +1,7 @@
 const { criarNo, criarElemento, aplicaForca, criarPino, criarRolete } = require('./bases')
 const math = require('mathjs')
 
+//NOTA NÃO É MAIS USADO POIS MATH NÃO RODA DIREITO
 
 //Monta a matriz de rigidez global da treliça
 function montarMatriz(nos, elementos) {
