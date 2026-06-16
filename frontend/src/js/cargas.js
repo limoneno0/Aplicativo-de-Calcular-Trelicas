@@ -84,13 +84,6 @@ btnAddCarga.addEventListener('click', (e) => {
         return;
     }
 
-    // validação 2: apenas uma única força por no
-    const noJaTemForca = listaCargas.some(c => c.no === noSelecionado);
-    if (noJaTemForca) {
-        alert(`O Nó ${noSelecionado} já possui uma força configurada. Remova-a antes se deseja alterá-la.`);
-        return;
-    }
-
     // validação 3: magnitude - apenas números positivos
     if (isNaN(magnitude) || magnitude <= 0) {
         alert("A magnitude da força deve ser um número positivo maior que zero.");
