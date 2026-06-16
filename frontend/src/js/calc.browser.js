@@ -192,10 +192,12 @@ window.calcularTrelica = function (nos, elementos, vinculos, forcas) {
         const F_total = matMul(K, u);
         const reacoes = vinculos.map(v => {
             const idx = (v.noId - 1) * 2;
+            // A reação precisa equilibrar a força interna da treliça (F_total)
+            // MENOS a força externa que o usuário aplicou diretamente no nó (F)
             return {
                 noId: v.noId,
-                rx: parseFloat(F_total[idx].toFixed(4)),
-                ry: parseFloat(F_total[idx + 1].toFixed(4)),
+                rx: parseFloat((F_total[idx] - F[idx]).toFixed(4)),
+                ry: parseFloat((F_total[idx + 1] - F[idx + 1]).toFixed(4)),
             };
         });
 
