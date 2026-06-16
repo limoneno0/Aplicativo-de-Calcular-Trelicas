@@ -66,6 +66,37 @@ function removerBarra(index) {
 }
 
 
+/* verifica se uma barra cruza outra */
+function barraCruzaOutra(noA, noB) {
+    const getNo = id => listaNos.find(n => Number(n.id) === Number(id));
+
+    const cruzamento = (a, b, c) =>
+        (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+
+    const A = getNo(noA);
+    const B = getNo(noB);
+
+    return listaBarras.some(barra => {
+        if (
+            Number(barra.noA) === Number(noA) ||
+            Number(barra.noA) === Number(noB) ||
+            Number(barra.noB) === Number(noA) ||
+            Number(barra.noB) === Number(noB)
+        ) {
+            return false;
+        }
+
+        const C = getNo(barra.noA);
+        const D = getNo(barra.noB);
+
+        return (
+            cruzamento(A, B, C) * cruzamento(A, B, D) < 0 &&
+            cruzamento(C, D, A) * cruzamento(C, D, B) < 0
+        );
+    });
+}
+
+
 /* eventos e logica */
 
 /* adicionar barra */
@@ -93,6 +124,11 @@ btnAddBarra.addEventListener('click', (e) => {
 
         if (barraExiste) {
             alert("Esta barra já foi adicionada.");
+            return;
+        }
+
+        if (barraCruzaOutra(valOrigem, valDestino)) {
+            alert("Esta barra cruza uma barra já existente.");
             return;
         }
 
