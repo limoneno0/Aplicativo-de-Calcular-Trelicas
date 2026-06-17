@@ -96,10 +96,10 @@ btnAddCarga.addEventListener('click', (e) => {
         return;
     }
 
-    // Validação 5: rótulo - apenas letras
-    const regexLetras = /^[A-Za-zÀ-ÿ]+$/;
-    if (!regexLetras.test(rotulo)) {
-        alert("O rótulo da força deve conter apenas letras.");
+    // Validação 5: rótulo - deve começar com uma letra, seguido por letras ou números
+    const regexValidaRotulo = /^[A-Za-zÀ-ÿ][A-Za-zÀ-ÿ0-9]*$/;
+    if (!regexValidaRotulo.test(rotulo)) {
+        alert("O rótulo da força deve começar obrigatoriamente com uma letra e conter apenas letras e números.");
         return;
     }
 
