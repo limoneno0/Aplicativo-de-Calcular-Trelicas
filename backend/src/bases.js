@@ -13,7 +13,7 @@ function criarNo(id, x, y) {
   }
 }
 
-//Essa função salva um ELEMENTO na trelissa
+//Essa função salva um ELEMENTO na trelica
 //A ligação entre os dois
 //Esse código não confirma se é possivel
 function criarElemento(id, noA, noB) {
